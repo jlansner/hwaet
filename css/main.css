@@ -1,0 +1,121 @@
+@import url("https://fonts.googleapis.com/css2?family=Gentium+Basic:ital,wght@0,400;0,700;1,400;1,700&family=IM+Fell+English:ital@0;1&display=swap");
+body {
+  font-family: "Times New Roman";
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  display: none;
+}
+
+footer {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  z-index: 10;
+  padding: 1em;
+  font-size: 0.75em;
+}
+footer div {
+  font-family: "Courier New", monospace;
+  font-size: 2em;
+  color: #999;
+  border: 3px solid #999;
+  border-radius: 50%;
+  width: 1em;
+  text-align: center;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pageWrapper {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+}
+
+.textWrapper {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  display: none;
+}
+
+.active {
+  display: block;
+}
+
+h1 {
+  text-align: center;
+  font-size: 7em;
+}
+
+h2 {
+  text-align: right;
+  font-weight: normal;
+  font-size: 2em;
+}
+
+.old_english {
+  font-family: "IM Fell English", serif;
+}
+
+.corkian {
+  font-family: "Gentium Basic", serif;
+}
+
+.englishTranslation {
+  font-size: 75%;
+}
+
+.creditOverlay {
+  display: none;
+  z-index: 10;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  max-height: 100vh;
+  overflow-y: scroll;
+  background-color: #fff;
+  padding: 1em;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+}
+.creditOverlay h2 {
+  text-align: center;
+}
+
+.closeOverlay {
+  position: absolute;
+  right: 0.5em;
+  display: block;
+  color: #999;
+  font-family: arial, helvetica;
+  font-size: 2em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.fullList {
+  width: 100%;
+}
+.fullList tr input {
+  display: block;
+}
+
+.showInfo .creditOverlay {
+  display: block;
+}
