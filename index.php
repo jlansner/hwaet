@@ -54,7 +54,7 @@ for( $i = 0; $i < $translationsCount; $i++ ) {
     <body>
         <div class="pageWrapper" id="pageWrapper">
             <?php foreach( $translations as $translation ) {
-                if ( trim( $translation[ "translation" ] ) ) { ?>
+                if ( trim( $translation[ "translation" ] ) && !$translation[ "not_translated" ] ) { ?>
                 <div class="textWrapper">
                 <h1 class="<?php echo $translation[ "cssStyle" ]; ?>">
                     <?php 

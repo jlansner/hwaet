@@ -2,7 +2,7 @@ if (window.location.protocol == 'http:') {
     window.location.href = window.location.href.replace( 'http:', 'https:' );
 }
 
-const translationsWithHwaet = _.filter( translations, ( row ) => row.translation.trim() ),
+const translationsWithHwaet = _.filter( translations, ( row ) => row.translation.trim() && row.not_translated !== "1" ),
     numberOfTranslations = translationsWithHwaet.length,
     getRandomNumber = ( currentNum ) => {
         var num = Math.floor( Math.random() * numberOfTranslations );
