@@ -78,9 +78,9 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                             .data()
                             .unique()
                             .sort( function( a, b ) {
-                                return a.toLowerCase().localeCompare(b.toLowerCase());
+                                return _.lowerCase( a ).localeCompare( _.lowerCase( b ) );
                             } )
-                            .each(function ( d, j ) {
+                            .each( function ( d, j ) {
                                 select.append( `<option value="${ d }">${ d }</option>` );
                             } );
                         
@@ -92,12 +92,8 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                 }
             } );
         }
-    };
-
-
-
-    
-const all = window.location.hash === "#all";
+    },
+    all = window.location.hash === "#all";
 
 let activeDiv = Math.floor(Math.random() * numberOfTranslations );
 
