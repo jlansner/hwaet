@@ -38,6 +38,7 @@ $fields = $db->getAdminFields();
         }
         else {
             echo "<p>Error adding record</p>";
+            var_export( $save );
         }
     }
     ?>

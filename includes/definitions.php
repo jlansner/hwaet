@@ -1,6 +1,6 @@
 <?php
 
-include( "passswords/passwords.php" );
+include( "passwords/passwords.php" );
 
 define( "RECENTLY_USED_COUNT", 10 );
 define( "BASE_SQL", "SELECT translations.id as translationId, translations.translation, translations.translation_eng, not_translated,

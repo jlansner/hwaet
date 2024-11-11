@@ -51,9 +51,13 @@ class Database {
   }
 
   public function saveRecord( $rawPost ) {
-      $post = (object) $rawPost;
+      $post = new stdClass();
+
+      foreach ( $rawPost as $key => $val ) {
+        $post->$key = trim( $val );
+      }
       
-      if ( $post->password !== "biteme" ) {
+      if ( $post->password !== ADMIN_PASS ) {
           return false;
       }
       $mysqli = $this->openConnection();

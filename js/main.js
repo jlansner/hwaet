@@ -6,7 +6,7 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
     numberOfTranslations = translationsWithHwaet.length,
     getRandomNumber = ( currentNum ) => {
         var num = Math.floor( Math.random() * numberOfTranslations );
-        return ( num === currentNum ) ? getRandomNumber( currentNum ) : num;
+        return num === currentNum ? getRandomNumber( currentNum ) : num;
     },
       
     showTranslation = () => {
@@ -70,7 +70,7 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                             .appendTo( $( column.header() ) )
                             .on( "change", function () {
                                 column
-                                    .search ($( this ).val(), { exact: true } )
+                                    .search ( $( this ).val(), { exact: true } )
                                     .draw();
                             } );
 
@@ -95,7 +95,7 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
     },
     all = window.location.hash === "#all";
 
-let activeDiv = Math.floor(Math.random() * numberOfTranslations );
+let activeDiv = Math.floor( Math.random() * numberOfTranslations );
 
   $( document ).ready( () => {
     
