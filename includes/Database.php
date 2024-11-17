@@ -3,12 +3,15 @@
 class Database {
   public function openConnection() {
       // Create connection
+      mysqli_report( MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT );
       $mysqli = new mysqli( SERVERNAME, USERNAME, PASSWORD, DBNAME );
       
       // Check connection
-      if ($mysqli->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
+      if ( $mysqli->connect_error ) {
+        die( "Connection failed: " . $conn->connect_error );
       }
+
+      $mysqli->set_charset( "utf8mb4" );
       
       return $mysqli;
   }

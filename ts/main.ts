@@ -1,5 +1,5 @@
-if (window.location.protocol == 'http:') {
-    window.location.href = window.location.href.replace( 'http:', 'https:' );
+if (window.location.protocol === "http:") {
+    window.location.href = window.location.href.replace( "http:", "https:" );
 }
 
 const translationsWithHwaet = _.filter( translations, ( row ) => row.translation.trim() && row.not_translated !== "1" ),
@@ -34,8 +34,11 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                 searching: true,
                 info: true,
                 columnDefs: [ { 
-                    targets: 2,
+                    target: 2,
                     type: "num"
+                }, {
+                    target: 7,
+                    visible: false
                 } ],
                 order: [ 2, "asc" ],
                 layout: {
@@ -65,8 +68,9 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                             $( input ).click( function( event ) {
                                 event.stopPropagation()
                             } );
+
                         } else if ( sortColumns.includes( column.index() ) ) {
-                            const select = $('<select><option value=""></option></select>')
+                            const select = $( `<select><option value=""></option></select>` )
                             .appendTo( $( column.header() ) )
                             .on( "change", function () {
                                 column

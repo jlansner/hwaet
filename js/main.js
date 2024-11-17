@@ -1,7 +1,7 @@
 "use strict";
 
-if (window.location.protocol == 'http:') {
-  window.location.href = window.location.href.replace('http:', 'https:');
+if (window.location.protocol === "http:") {
+  window.location.href = window.location.href.replace("http:", "https:");
 }
 var translationsWithHwaet = _.filter(translations, function (row) {
     return row.translation.trim() && row.not_translated !== "1";
@@ -35,8 +35,11 @@ var translationsWithHwaet = _.filter(translations, function (row) {
         searching: true,
         info: true,
         columnDefs: [{
-          targets: 2,
+          target: 2,
           type: "num"
+        }, {
+          target: 7,
+          visible: false
         }],
         order: [2, "asc"],
         layout: {
@@ -62,7 +65,7 @@ var translationsWithHwaet = _.filter(translations, function (row) {
                 event.stopPropagation();
               });
             } else if (sortColumns.includes(column.index())) {
-              var select = $('<select><option value=""></option></select>').appendTo($(column.header())).on("change", function () {
+              var select = $("<select><option value=\"\"></option></select>").appendTo($(column.header())).on("change", function () {
                 column.search($(this).val(), {
                   exact: true
                 }).draw();

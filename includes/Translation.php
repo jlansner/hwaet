@@ -43,10 +43,21 @@ class Translation {
         return $fullName;
     }
 
+    private function completeTranslation( $translation ) {
+    
+        $translation[ "cssStyle" ] = strtolower( str_replace( " ", "_",  $translation[ "languageInEnglish" ] ) );
+        $translation[ "fullName" ] = $this->getFullName( $translation );
+        $translation[ "fullNameByLast" ] = $this->getFullName( $translation, true );
+        if ( $translation[ "not_translated" ] ) {
+            $translation[ "translation" ] = "—";
+        }
+
+        return $translation;
+    }
+
     public function getData() {
         $db = new Database();
         $mysqli = $db->openConnection();
-        $mysqli->set_charset('utf8mb4');
         
         $baseSql = BASE_SQL;
 
@@ -60,14 +71,15 @@ class Translation {
         
         $mysqli->close();
     
-        return $resultArray;
+        $translations = array_map( [ $this, "completeTranslation" ], $resultArray );
+        
+        return $translations;
     }
 
     function getRow( $id ) {
         $db = new Database();
 
         $mysqli = $db->openConnection();
-        $mysqli->set_charset('utf8mb4');
     
         $baseSql = BASE_SQL;
         $sql = "$baseSql WHERE translations.id = " . $id;
@@ -87,7 +99,6 @@ class Translation {
         $db = new Database();
         
         $mysqli = $db->openConnection();
-        $mysqli->set_charset('utf8mb4');
             
         $settingsSql = "SELECT name, properties FROM settings WHERE name = 'single'";
         
@@ -130,7 +141,7 @@ class Translation {
     
         try {
             $bluesky->auth( BS_HANDLE, BS_PASSWORD );
-        } catch (Exception $e) {
+        } catch ( Exception $e ) {
             // TODO: Handle the exception however you want
         }
         
@@ -178,13 +189,13 @@ class Translation {
         ];
     
         $post = [
-            'collection' => 'app.bsky.feed.post',
-            'repo' => $translation[ "repo" ],
-            'record' => [
-                'text' => $options[ "postText" ],
-                'langs' => $options[ "languages" ],
-                'createdAt' => date('c'),
-                '$type' => 'app.bsky.feed.post',
+            "collection" => "app.bsky.feed.post",
+            "repo" => $translation[ "repo" ],
+            "record" => [
+                "text" => $options[ "postText" ],
+                "langs" => $options[ "languages" ],
+                "createdAt" => date( "c" ),
+                "$type" => "app.bsky.feed.post",
             ]
         ];
         
@@ -310,13 +321,13 @@ class Translation {
     private function file_get_contents_curl( $url ) {
         $ch = curl_init();
     
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_URL, $url );
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+        curl_setopt( $ch, CURLOPT_HEADER, 0 );
+        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
+        curl_setopt( $ch, CURLOPT_URL, $url );
+        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
     
-        $data = curl_exec($ch);
-        curl_close($ch);
+        $data = curl_exec( $ch );
+        curl_close( $ch );
     
         return $data;
     }

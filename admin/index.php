@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set( "display_errors", 1 );
+ini_set( "display_startup_errors", 1 );
+error_reporting( E_ALL );
 
 include( "../includes/Translation.php" );
 include( "../includes/Utils.php" );
@@ -19,8 +19,8 @@ $fields = $db->getAdminFields();
 <head>
     <title>Hwaet Admin</title>
     <script tyype=text/javascript">
-        if (window.location.protocol == 'http:') {
-            window.location.href = window.location.href.replace( 'http:', 'https:' );
+        if ( window.location.protocol === "http:" ) {
+            window.location.href = window.location.href.replace( "http:", "https:" );
         }
     </script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
@@ -30,7 +30,7 @@ $fields = $db->getAdminFields();
 <body>
     <?php 
 
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ( $_SERVER[ "REQUEST_METHOD" ] === "POST" ) {
         $save = $db->saveRecord( $_POST );
         
         if ( $save ) {

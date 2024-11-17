@@ -1,27 +1,17 @@
 <!DOCTYPE html>
 <?php
 
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+ini_set( "display_errors", 1 );
+ini_set( "display_startup_errors", 1 );
+error_reporting( E_ALL );
 
 include( "includes/Translation.php" );
 
 $translate = new Translation();
 
 $translations = $translate->getData();
-$translationsCount = count( $translations );
 
-for( $i = 0; $i < $translationsCount; $i++ ) {
-    $translations[ $i ][ "cssStyle" ] = strtolower( str_replace( " ", "_",  $translations[ $i ][ "languageInEnglish" ] ) );
-    $translations[ $i ][ "fullName" ] = $translate->getFullName( $translations[ $i ] );
-    $translations[ $i ][ "fullNameByLast" ] = $translate->getFullName( $translations[ $i ], true );
-    if ( $translations[ $i ][ "not_translated" ] ) {
-        $translations[ $i ][ "translation" ] = "—";
-    }
-}
-
- $translationJS = json_encode( $translations );
+$translationJS = json_encode( $translations );
 ?>
 <html>
     <head>
@@ -74,7 +64,7 @@ for( $i = 0; $i < $translationsCount; $i++ ) {
         </div>
             
             <?php 
-            }
+                }
             } ?>
         </div>
         
@@ -96,6 +86,7 @@ for( $i = 0; $i < $translationsCount; $i++ ) {
                     <th>Language</th>
                     <th>Translation</th>
                     <th>English Translation</th>
+                    <th>No Translation</th>
                 </thead>
                 <tbody>
                     <?php foreach( $translations as $translation ) { ?>
@@ -113,6 +104,7 @@ for( $i = 0; $i < $translationsCount; $i++ ) {
                         <td><?php echo $translation[ "language" ]; ?></td>
                         <td><?php echo $translation[ "translation" ]; ?></td>
                         <td><?php echo $translation[ "translation_eng" ]; ?></td>
+                        <td><?php echo $translation[ "not_translated" ]; ?></td>
                         </tr>
                     <?php } ?>
                 </tbody>
