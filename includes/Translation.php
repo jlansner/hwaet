@@ -57,19 +57,19 @@ class Translation {
 
     public function getData() {
         $db = new Database();
-        $mysqli = $db->openConnection();
+        $conn = $db->openConnection();
         
         $baseSql = BASE_SQL;
 
         $sql = "$baseSql WHERE (translation IS NOT NULL and translation != '') OR not_translated = 1";
         
-        $result = $mysqli->query( $sql );
+        $result = $conn->query( $sql );
         
         if ( $result->num_rows > 0 ) {
           $resultArray = $result->fetch_all( MYSQLI_ASSOC );
         }
         
-        $mysqli->close();
+        $conn->close();
     
         $translations = array_map( [ $this, "completeTranslation" ], $resultArray );
         
@@ -79,18 +79,18 @@ class Translation {
     function getRow( $id ) {
         $db = new Database();
 
-        $mysqli = $db->openConnection();
+        $conn = $db->openConnection();
     
         $baseSql = BASE_SQL;
         $sql = "$baseSql WHERE translations.id = " . $id;
         
-        $result = $mysqli->query( $sql );
+        $result = $conn->query( $sql );
         
         if ( $result->num_rows > 0 ) {
           $resultArray = $result->fetch_array( MYSQLI_ASSOC );
         }
         
-        $mysqli->close();
+        $conn->close();
     
         return $resultArray;
     }
@@ -98,11 +98,11 @@ class Translation {
     function getRandomRow() {
         $db = new Database();
         
-        $mysqli = $db->openConnection();
+        $conn = $db->openConnection();
             
         $settingsSql = "SELECT name, properties FROM settings WHERE name = 'single'";
         
-        $settingsResult = $mysqli->query( $settingsSql );
+        $settingsResult = $conn->query( $settingsSql );
         
         if ( $settingsResult->num_rows > 0 ) {
           $resultArray = $settingsResult->fetch_array( MYSQLI_ASSOC );
@@ -114,7 +114,7 @@ class Translation {
         $baseSql = BASE_SQL;
         $sql = "$baseSql WHERE translations.translation IS NOT NULL AND translations.translation <> '' AND translations.id NOT IN ( $recentlyUsed ) order by RAND() limit 1";
         
-        $result = $mysqli->query( $sql );
+        $result = $conn->query( $sql );
         
         if ( $result->num_rows > 0 ) {
           $resultArray = $result->fetch_array( MYSQLI_ASSOC );
@@ -129,9 +129,9 @@ class Translation {
         $jsonProperties = json_encode( $properties );
         $updateSql = "UPDATE settings SET properties = '$jsonProperties' WHERE name = 'single'";
         
-        $mysqli->query( $updateSql );
+        $conn->query( $updateSql );
         
-        $mysqli->close();
+        $conn->close();
     
         return $resultArray;
     }
@@ -195,7 +195,7 @@ class Translation {
                 "text" => $options[ "postText" ],
                 "langs" => $options[ "languages" ],
                 "createdAt" => date( "c" ),
-                "$type" => "app.bsky.feed.post",
+                '$type' => "app.bsky.feed.post",
             ]
         ];
         
