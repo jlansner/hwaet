@@ -49,7 +49,7 @@ $translationJS = json_encode( $translations );
                 <h1 class="<?php echo $translation[ "cssStyle" ]; ?>">
                     <?php 
                         echo $translation[ "translation" ]; 
-                        if ( strlen( trim( $translation[ "translation_eng" ] ) ) ) { ?>
+                        if ( strlen( trim( ( $translation[ "translation_eng" ] || "" ) ) ) ) { ?>
                             <br /><span class="englishTranslation">(<?php echo $translation[ "translation_eng" ] ?>)</span>
                         <?php
                         }
