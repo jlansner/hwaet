@@ -15,5 +15,20 @@ class Utils {
 
         return $optionsFields;
     }
+
+    public function isStringWithContent( $string ) {
+        $type = gettype( $string );
+        $numberTypes = array( "integer", "double" );
+    
+        if ( $type === "string" ) {
+          return strlen( trim( $string ) ) > 0;
+        }
+    
+        if ( in_array( $type, $numberTypes ) ) {
+          return true;
+        }
+    
+      return false;
+    }
 }
 ?>

@@ -6,8 +6,10 @@ ini_set( "display_startup_errors", 1 );
 error_reporting( E_ALL );
 
 include( "includes/Translation.php" );
+include( "includes/Utils.php" );
 
 $translate = new Translation();
+$utils = new Utils();
 
 $translations = $translate->getData();
 
@@ -44,12 +46,12 @@ $translationJS = json_encode( $translations );
     <body>
         <div class="pageWrapper" id="pageWrapper">
             <?php foreach( $translations as $translation ) {
-                if ( trim( $translation[ "translation" ] ) && !$translation[ "not_translated" ] ) { ?>
+                if ( $utils->isStringWithContent( $translation[ "translation" ] ) && !$translation[ "not_translated" ] ) { ?>
                 <div class="textWrapper">
                 <h1 class="<?php echo $translation[ "cssStyle" ]; ?>">
                     <?php 
                         echo $translation[ "translation" ]; 
-                        if ( strlen( trim( ( $translation[ "translation_eng" ] || "" ) ) ) ) { ?>
+                        if ( $utils->isStringWithContent( $translation[ "translation_eng" ] ) ) { ?>
                             <br /><span class="englishTranslation">(<?php echo $translation[ "translation_eng" ] ?>)</span>
                         <?php
                         }

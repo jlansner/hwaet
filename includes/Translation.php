@@ -4,6 +4,10 @@ include( "definitions.php" );
 include( "Database.php" );
 include( "BlueskyApi.php" );
 
+if ( class_exists( "Utils" ) ) {
+    include( "Utils.php" );
+}
+
 class Translation {
 
     public function getFullName( $translation, $sortByLastName = false ) {
@@ -155,12 +159,13 @@ class Translation {
     }
     
     public function generateBlueskyPost( $translation ) {
+        $utils = new Utils();
         $translate = new Translation();
         $fullName = $translate->getFullName( $translation );
         
         $postText = '"' . $translation[ "translation" ] . '"';
         
-        if ( strlen( trim( $translation[ "translation_eng" ] ) ) ) {
+        if ( $utils->isStringWithContent( $translation[ "translation_eng" ] ) ) {
             $postText .= " (" . trim( $translation[ "translation_eng" ] ) . ")";
         }
         
@@ -172,13 +177,13 @@ class Translation {
         
         $postText .= $fullName;
     
-        if ( strlen ( trim( $translation[ "countryEmoji" ] ) ) ) {
+        if ( $utils->isStringWithContent( $translation[ "countryEmoji" ] ) ) {
             $postText .= " " . $translation[ "countryEmoji" ];
         }
         
         $languages = [ "en" ];
         
-        if ( strlen( trim( $translation[ "code" ] ) ) && $translation[ "code" ] !== "en" ) {
+        if ( $utils->isStringWithContent( $translation[ "code" ] ) && $translation[ "code" ] !== "en" ) {
             array_push( $languages, $translation[ "code" ] );
         }
         
@@ -264,7 +269,9 @@ class Translation {
     }
 
     private function remoteFileExists( $url ) {
-        if ( !strlen( trim( $url ) ) ) {
+        $utils = new Utils();
+
+        if ( !$utils->isStringWithContent( $url ) ) {
             return false;   
         }
     
