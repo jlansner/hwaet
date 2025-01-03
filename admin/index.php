@@ -56,8 +56,16 @@ $fields = $db->getAdminFields();
 <p><label for="additional_name">Additional Name</label>
 <input type="text" id="additional_name" name="additional_name"></p>
 
+<p><label for="name_transliteration">Name Transliteration</label>
+<input type="text" id="name_transliteration" name="name_transliteration"></p>
+
 <p><label for="title">Title</label>
 <input type="text" id="title" name="title"></p>
+
+<p><label for="title_transliteration">Title Transliteration</label>
+<input type="text" id="title_transliteration" name="title_transliteration"></p>
+
+
 <p><label for="year">Year</label>
 <input type="text" id="year" name="year"></p>
 <p><label for="publisher">Publisher</label>
@@ -75,7 +83,10 @@ $fields = $db->getAdminFields();
 <p><label for="country">Country</label>
 <select id="country" name="country">
 <?php
-        echo $utils->getOptionFields( [ "values" => $fields[ "countries" ] ] );
+        echo $utils->getOptionFields( [ 
+            "values" => $fields[ "countries" ],
+            "name" => "name_eng"
+            ] );
     ?>
 </select>
 </p>
@@ -88,10 +99,19 @@ $fields = $db->getAdminFields();
     ?>
 </select>
 </p>
+<p><label for="type">Type</label>
+<select id="type" name="type">
+    <?php
+        echo $utils->getOptionFields( [ "values" => $fields[ "types" ] ] );
+    ?>
+</select>
+</p>
 <p><label for="translation">Translation</label>
 <input type="text" id="translation" name="translation"></p>
 <p><label for="translation_eng">Translation in English</label>
 <input type="text" id="translation_eng" name="translation_eng"></p>
+<p><label for="transliteration">Transliteration</label>
+<input type="text" id="transliteration" name="transliteration"></p>
 
 <p><label for="not_translated">No translation</label>
 <input type="hidden" name="not_translated" value="0">

@@ -3,10 +3,10 @@
 include( "passwords/passwords.php" );
 
 define( "RECENTLY_USED_COUNT", 10 );
-define( "BASE_SQL", "SELECT translations.id as translationId, translations.translation, translations.translation_eng, not_translated,
-    book.title, book.year, book.url, 
-    author.first_name, author.middle_name, author.last_name, author.additional_name, 
-    language.name AS language, language.name_eng as languageInEnglish, language.emoji AS languageEmoji, language.code,
+define( "BASE_SQL", "SELECT translations.id as translationId, translations.translation, translations.translation_eng, translations.not_translated, translations.transliteration,
+    book.title, book.year, book.url, book.title_transliteration,
+    author.first_name, author.middle_name, author.last_name, author.additional_name, author.name_transliteration,
+    language.name AS language, language.name_eng as languageInEnglish, language.emoji AS languageEmoji, language.code, language.lastname_first, language.transliterate,
     format.name as format,
     country.emoji as countryEmoji, country.name AS countryName, country.name_eng as countryInEnglish
     FROM translations

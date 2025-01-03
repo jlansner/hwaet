@@ -14,29 +14,43 @@ class Translation {
         $firstName = trim( $translation[ 'first_name' ] );
         $middleName = trim( $translation[ "middle_name" ] );
         $lastName = trim( $translation[ "last_name" ] );
-        $additionalNameConnector = $sortByLastName ? ", and " : " and ";
+        $transliteratedName = trim( $translation[ "name_transliteration" ] );
         $additonalName = trim( $translation[ "additional_name" ] );
+        $lastNameFirst = $translation[ "lastname_first" ] === "1";
+        $additionalNameConnector = $sortByLastName && !$lastNameFirst ? ", and " : " and ";
         $fullName = "";
         
-        if ( $sortByLastName ) {
+        if ( $lastNameFirst ) {
             $fullName = $lastName;
 
             if ( strlen( $firstName ) ) {
-                $fullName .= ", " . $firstName;
+                $fullName .= " " . $firstName;
 
                 if ( strlen( $middleName ) ) {
                     $fullName .= " " . $middleName;
                 }
             }
         } else {
-            $fullName = $firstName;
+            if ( $sortByLastName ) {
+                $fullName = $lastName;
 
-            if ( strlen( $middleName ) ) {
-                $fullName .= " " . $middleName;
-            }
+                if ( strlen( $firstName ) ) {
+                    $fullName .= ", " . $firstName;
 
-            if ( strlen( $lastName ) ) {
-                $fullName .= " " . $lastName;
+                    if ( strlen( $middleName ) ) {
+                        $fullName .= " " . $middleName;
+                    }
+                }
+            } else {
+                $fullName = $firstName;
+
+                if ( strlen( $middleName ) ) {
+                    $fullName .= " " . $middleName;
+                }
+
+                if ( strlen( $lastName ) ) {
+                    $fullName .= " " . $lastName;
+                }
             }
         }
 
@@ -44,16 +58,25 @@ class Translation {
             $fullName .= $additionalNameConnector . $additonalName;
         }
 
+        if ( $transliteratedName ) {
+            $fullName .= " [" . $transliteratedName . "]";
+        }
+
         return $fullName;
     }
 
     private function completeTranslation( $translation ) {
+        $utils = new Utils();
     
         $translation[ "cssStyle" ] = strtolower( str_replace( " ", "_",  $translation[ "languageInEnglish" ] ) );
         $translation[ "fullName" ] = $this->getFullName( $translation );
         $translation[ "fullNameByLast" ] = $this->getFullName( $translation, true );
         if ( $translation[ "not_translated" ] ) {
             $translation[ "translation" ] = "—";
+        }
+
+        if ( $utils->isStringWithContent( $translation[ "title_transliteration" ] ) ) {
+            $translation[ "title" ] .= " [" . trim( $translation[ "title_transliteration" ] ) . "]";
         }
 
         return $translation;
@@ -162,16 +185,24 @@ class Translation {
         $utils = new Utils();
         $translate = new Translation();
         $fullName = $translate->getFullName( $translation );
+        $title = trim( $translation[ "title" ] );
+        if ( $utils->isStringWithContent( $tranlation[ "title_transliteration" ] ) ) {
+            $title .= " [" . trim( $translation[ "title_transliteration" ] ) . "]";
+        }
         
         $postText = '"' . $translation[ "translation" ] . '"';
-        
+
+        if ( $utils->isStringWithContent( $translation[ "transliteration" ] ) ) {
+            $postText .= " [" . trim( $translation[ "transliteration" ] ) . "]";
+        }
+
         if ( $utils->isStringWithContent( $translation[ "translation_eng" ] ) ) {
             $postText .= " (" . trim( $translation[ "translation_eng" ] ) . ")";
         }
         
         $postText .= PHP_EOL;
         
-        $postText .= trim( $translation[ "title" ] ) . ', ' . $translation[ 'year' ];
+        $postText .=  $title . ', ' . $translation[ 'year' ];
         
         $postText .= PHP_EOL;
         

@@ -51,6 +51,10 @@ $translationJS = json_encode( $translations );
                 <h1 class="<?php echo $translation[ "cssStyle" ]; ?>">
                     <?php 
                         echo $translation[ "translation" ]; 
+                        if ( $utils->isStringWithContent( $translation[ "transliteration" ] ) ) { ?>
+                            <br /><span class="transliteration">[<?php echo $translation[ "transliteration" ] ?>]</span>
+                        <?php
+                        }
                         if ( $utils->isStringWithContent( $translation[ "translation_eng" ] ) ) { ?>
                             <br /><span class="englishTranslation">(<?php echo $translation[ "translation_eng" ] ?>)</span>
                         <?php
@@ -103,8 +107,12 @@ $translationJS = json_encode( $translations );
                         ?></td>
                         <td><?php echo $translation[ "year" ]; ?></td>
                         <td><?php echo $translation[ "format" ]; ?></td>
-                        <td><?php echo $translation[ "language" ]; ?></td>
-                        <td><?php echo $translation[ "translation" ]; ?></td>
+                        <td><?php echo $translation[ "languageInEnglish" ]; ?></td>
+                        <td><?php echo $translation[ "translation" ]; 
+                        if ( $utils->isStringWithContent( $translation[ "transliteration" ] ) ) { ?>
+                            <span class="transliteration">[<?php echo $translation[ "transliteration" ] ?>]</span>
+                        <?php
+                        }?></td>
                         <td><?php echo $translation[ "translation_eng" ]; ?></td>
                         <td><?php echo $translation[ "not_translated" ]; ?></td>
                         </tr>
