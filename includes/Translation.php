@@ -186,7 +186,7 @@ class Translation {
         $translate = new Translation();
         $fullName = $translate->getFullName( $translation );
         $title = trim( $translation[ "title" ] );
-        if ( $utils->isStringWithContent( $tranlation[ "title_transliteration" ] ) ) {
+        if ( $utils->isStringWithContent( $translation[ "title_transliteration" ] ) ) {
             $title .= " [" . trim( $translation[ "title_transliteration" ] ) . "]";
         }
         
