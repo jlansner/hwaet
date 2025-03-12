@@ -30,5 +30,18 @@ class Utils {
     
       return false;
     }
+
+    public function getCount( $array, $prop ) {
+    
+      $mappedArray = array();
+      
+      foreach( $array as $obj ) {
+        array_push( $mappedArray, $obj[ $prop ] );
+      }
+
+      $uniqueArray = array_unique( $mappedArray);
+
+      return count( $uniqueArray );
+    }
 }
 ?>

@@ -37,17 +37,14 @@ var translationsWithHwaet = _.filter(translations, function (row) {
         columnDefs: [{
           target: 2,
           type: "num"
-        }, {
-          target: 7,
-          visible: false
         }],
         order: [2, "asc"],
         layout: {
           topEnd: null
         },
         initComplete: function initComplete() {
-          var searchColumns = [0, 1, 5, 6],
-            sortColumns = [3, 4];
+          var searchColumns = [0, 1, 4, 5],
+            sortColumns = [3];
           this.api().columns().every(function () {
             var column = this,
               header = column.header(),
@@ -87,6 +84,7 @@ var translationsWithHwaet = _.filter(translations, function (row) {
   all = window.location.hash === "#all";
 var activeDiv = Math.floor(Math.random() * numberOfTranslations);
 $(document).ready(function () {
+  $("#menu").tabs();
   showTranslation();
   setInterval(showTranslation, 5000);
   $("body").on("click", "footer div", function () {

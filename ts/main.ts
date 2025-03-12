@@ -36,17 +36,14 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
                 columnDefs: [ { 
                     target: 2,
                     type: "num"
-                }, {
-                    target: 7,
-                    visible: false
                 } ],
                 order: [ 2, "asc" ],
                 layout: {
                     topEnd: null
                 },
                 initComplete: function () {
-                    const searchColumns = [ 0, 1, 5, 6 ],
-                        sortColumns = [ 3, 4 ];
+                    const searchColumns = [ 0, 1, 4, 5 ],
+                        sortColumns = [ 3 ];
                     this.api()
                     .columns()
                     .every( function () {
@@ -102,6 +99,8 @@ const translationsWithHwaet = _.filter( translations, ( row ) => row.translation
 let activeDiv = Math.floor( Math.random() * numberOfTranslations );
 
   $( document ).ready( () => {
+    
+    $( "#menu" ).tabs();
     
     showTranslation();
     setInterval( showTranslation, 5000 );

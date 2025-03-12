@@ -11,11 +11,11 @@ if ( class_exists( "Utils" ) ) {
 class Translation {
 
     public function getFullName( $translation, $sortByLastName = false ) {
-        $firstName = trim( $translation[ 'first_name' ] );
-        $middleName = trim( $translation[ "middle_name" ] );
-        $lastName = trim( $translation[ "last_name" ] );
-        $transliteratedName = trim( $translation[ "name_transliteration" ] );
-        $additonalName = trim( $translation[ "additional_name" ] );
+        $firstName = trim( $translation[ 'authorFirstName' ] );
+        $middleName = trim( $translation[ "authorMiddleName" ] );
+        $lastName = trim( $translation[ "authorLastName" ] );
+        $transliteratedName = trim( $translation[ "authorTransliteration" ] );
+        $additonalName = trim( $translation[ "authorAdditionalName" ] );
         $lastNameFirst = $translation[ "lastname_first" ] === "1";
         $additionalNameConnector = $sortByLastName && !$lastNameFirst ? ", and " : " and ";
         $fullName = "";
@@ -71,12 +71,9 @@ class Translation {
         $translation[ "cssStyle" ] = strtolower( str_replace( " ", "_",  $translation[ "languageInEnglish" ] ) );
         $translation[ "fullName" ] = $this->getFullName( $translation );
         $translation[ "fullNameByLast" ] = $this->getFullName( $translation, true );
-        if ( $translation[ "not_translated" ] ) {
-            $translation[ "translation" ] = "—";
-        }
-
-        if ( $utils->isStringWithContent( $translation[ "title_transliteration" ] ) ) {
-            $translation[ "title" ] .= " [" . trim( $translation[ "title_transliteration" ] ) . "]";
+        
+        if ( $utils->isStringWithContent( $translation[ "titleTransliteration" ] ) ) {
+            $translation[ "title" ] .= " [" . trim( $translation[ "titleTransliteration" ] ) . "]";
         }
 
         return $translation;
@@ -85,12 +82,8 @@ class Translation {
     public function getData() {
         $db = new Database();
         $conn = $db->openConnection();
-        
-        $baseSql = BASE_SQL;
-
-        $sql = "$baseSql WHERE (translation IS NOT NULL and translation != '') OR not_translated = 1";
-        
-        $result = $conn->query( $sql );
+                
+        $result = $conn->query( BASE_SQL );
         
         if ( $result->num_rows > 0 ) {
           $resultArray = $result->fetch_all( MYSQLI_ASSOC );
@@ -109,7 +102,7 @@ class Translation {
         $conn = $db->openConnection();
     
         $baseSql = BASE_SQL;
-        $sql = "$baseSql WHERE translations.id = " . $id;
+        $sql = "$baseSql AND hwaets.id = " . $id;
         
         $result = $conn->query( $sql );
         
@@ -139,7 +132,7 @@ class Translation {
         $recentlyUsed = implode( ",", $properties[ "recentlyUsed" ] );
         
         $baseSql = BASE_SQL;
-        $sql = "$baseSql WHERE translations.translation IS NOT NULL AND translations.translation <> '' AND translations.id NOT IN ( $recentlyUsed ) order by RAND() limit 1";
+        $sql = "$baseSql and hwaet.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )";
         
         $result = $conn->query( $sql );
         
@@ -147,14 +140,10 @@ class Translation {
           $resultArray = $result->fetch_array( MYSQLI_ASSOC );
         }
         
-        if ( count( $properties[ "recentlyUsed" ] ) >= RECENTLY_USED_COUNT ) {
-            array_splice( $properties[ "recentlyUsed" ], 0, 1 );
-        }
+        $newSkeetCount = $resultArray[ "skeet_count" ] + 1;
+        $translationId = $resultArray[ "translationId" ];
         
-        array_push( $properties[ "recentlyUsed" ], (int)$resultArray[ "translationId" ] );
-        
-        $jsonProperties = json_encode( $properties );
-        $updateSql = "UPDATE settings SET properties = '$jsonProperties' WHERE name = 'single'";
+        $updateSql = "UPDATE hwaets SET skeet_count = $newSkeetCount WHERE id = $translationId" ;
         
         $conn->query( $updateSql );
         
@@ -186,18 +175,18 @@ class Translation {
         $translate = new Translation();
         $fullName = $translate->getFullName( $translation );
         $title = trim( $translation[ "title" ] );
-        if ( $utils->isStringWithContent( $translation[ "title_transliteration" ] ) ) {
-            $title .= " [" . trim( $translation[ "title_transliteration" ] ) . "]";
+        if ( $utils->isStringWithContent( $translation[ "titleTransliteration" ] ) ) {
+            $title .= " [" . trim( $translation[ "titleTransliteration" ] ) . "]";
         }
         
         $postText = '"' . $translation[ "translation" ] . '"';
 
-        if ( $utils->isStringWithContent( $translation[ "transliteration" ] ) ) {
-            $postText .= " [" . trim( $translation[ "transliteration" ] ) . "]";
+        if ( $utils->isStringWithContent( $translation[ "translationTransliteration" ] ) ) {
+            $postText .= " [" . trim( $translation[ "translationTransliteration" ] ) . "]";
         }
 
-        if ( $utils->isStringWithContent( $translation[ "translation_eng" ] ) ) {
-            $postText .= " (" . trim( $translation[ "translation_eng" ] ) . ")";
+        if ( $utils->isStringWithContent( $translation[ "translationInEnglish" ] ) ) {
+            $postText .= " (" . trim( $translation[ "translationInEnglish" ] ) . ")";
         }
         
         $postText .= PHP_EOL;
