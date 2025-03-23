@@ -132,7 +132,7 @@ class Translation {
         $recentlyUsed = implode( ",", $properties[ "recentlyUsed" ] );
         
         $baseSql = BASE_SQL;
-        $sql = "$baseSql and hwaet.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )";
+        $sql = "$baseSql and hwaets.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )";
         
         $result = $conn->query( $sql );
         
