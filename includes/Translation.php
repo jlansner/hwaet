@@ -119,20 +119,10 @@ class Translation {
         $db = new Database();
         
         $conn = $db->openConnection();
-            
-        $settingsSql = "SELECT name, properties FROM settings WHERE name = 'single'";
-        
-        $settingsResult = $conn->query( $settingsSql );
-        
-        if ( $settingsResult->num_rows > 0 ) {
-          $resultArray = $settingsResult->fetch_array( MYSQLI_ASSOC );
-          $properties = json_decode( $resultArray[ "properties" ], true );
-        }
-        
-        $recentlyUsed = implode( ",", $properties[ "recentlyUsed" ] );
         
         $baseSql = BASE_SQL;
-        $sql = "$baseSql and hwaets.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )";
+        $sql = $baseSql . ' and hwaets.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )
+        ORDER BY ( hwaets.skeet_count + 1 ) * RAND()';
         
         $result = $conn->query( $sql );
         
