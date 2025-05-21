@@ -122,7 +122,8 @@ class Translation {
         
         $baseSql = BASE_SQL;
         $sql = $baseSql . ' and hwaets.modified < ( SELECT DATE_SUB(NOW(), INTERVAL 5 DAY) )
-        ORDER BY ( hwaets.skeet_count + 1 ) * RAND()';
+        ORDER BY ( hwaets.skeet_count + 1 ) * RAND()
+        LIMIT 1';
         
         $result = $conn->query( $sql );
         
@@ -214,139 +215,8 @@ class Translation {
             ]
         ];
         
-        $url = $options[ "url" ];
-        if ( $this->remoteFileExists( $url ) ) {
-            
-            $doc = new DOMDocument(); // Create a new DOMDocument
-            libxml_use_internal_errors( true ); // Suppress errors for invalid HTML, if needed
-            $doc->loadHTMLFile( $url ); // Load the HTML from the URL
-            libxml_use_internal_errors( false ); // Restore error handling
-     
-            $xpath = new DOMXPath( $doc ); // Create a new DOMXPath object for querying the document
-    
-            // $html = $this->file_get_contents_curl( $url );
-    
-            // //parsing begins here:
-            // $doc = new DOMDocument();
-            // @$doc->loadHTML($html);
-            // $nodes = $doc->getElementsByTagName('title');
-            
-            // //get and display what you need:
-            // $title = $nodes->item(0)->nodeValue;
-            
-            // $metas = $doc->getElementsByTagName('meta');
-    
-            // $metaData = [];
-            // foreach( $metas as $meta ) { 
-            //     var_dump( $meta );
-            //     if ( $meta->getAttribute('name') ) {
-                    
-            //   array_push( $metaData, array(
-            //         'name' => $meta->getAttribute('name'),
-            //         'content' => $meta->getAttribute('content')
-            //     ) );
-                    
-            //     } else if ( $meta->getAttribute('property') ) {
-            //   array_push( $metaData, array(
-            //         'name' => $meta->getAttribute('property'),
-            //         'content' => $meta->getAttribute('content')
-            //     ) );
-            //     }
-            // }
-    
-            $metaData = get_meta_tags( $url );
-    
-            $title = $this->findMetaTag( "title", $metaData );
-            
-            $options[ "title" ] = $title;
-            $options[ "description" ] = $this->findMetaTag( "description", $metaData );
-            // $options[ "image" ] = findMetaTag( "image", $metaData );
-        
-            $external = [
-                "uri" => $options[ "url" ],
-                "title" => $options[ "title" ],
-                "description" => $options[ "description" ]
-                // "image" => $options[ "image" ]
-            ];
-    
-            $post[ "embed" ] = [
-                '$type' => "app.bsky.embed.external",
-                "external" => $external
-            ];
-        }
-        
         return $post;
     }
 
-    private function remoteFileExists( $url ) {
-        $utils = new Utils();
-
-        if ( !$utils->isStringWithContent( $url ) ) {
-            return false;   
-        }
-    
-        $curl = curl_init( $url );
-    
-        //don't fetch the actual page, you only want to check the connection is ok
-        curl_setopt( $curl, CURLOPT_NOBODY, true );
-    
-        //do request
-        $result = curl_exec( $curl );
-    
-        $ret = false;
-    
-        //if request did not fail
-        if ( $result !== false ) {
-            //if request was ok, check response code
-            $statusCode = curl_getinfo( $curl, CURLINFO_HTTP_CODE );
-    
-            if ( $statusCode == 200 ) {
-                $ret = true;   
-            }
-        }
-    
-        curl_close( $curl );
-    
-        return $ret;
-    }
-
-    private function findMetaTag( $tag, $array ) {
-        $allSearchTerms = [
-            "title" => [ "title", "name" ],
-            "description" => [ "description" ],
-            "image" => [ "image" ]
-        ];
-        
-        $searchTerms = $allSearchTerms[ $tag ];
-            $tagValue = "";
-    
-        foreach ( $array as $key=>$value ) {
-            foreach( $searchTerms as $term ) {
-                if ( strpos( $key, $term ) !== false) {
-                    $tagValue = $value;
-                }
-    
-                if ( $tagValue !== "" ) {
-                    break;
-                }
-            }
-        }
-        
-        return $tagValue;
-    }
-
-    private function file_get_contents_curl( $url ) {
-        $ch = curl_init();
-    
-        curl_setopt( $ch, CURLOPT_HEADER, 0 );
-        curl_setopt( $ch, CURLOPT_RETURNTRANSFER, 1 );
-        curl_setopt( $ch, CURLOPT_URL, $url );
-        curl_setopt( $ch, CURLOPT_FOLLOWLOCATION, 1 );
-    
-        $data = curl_exec( $ch );
-        curl_close( $ch );
-    
-        return $data;
-    }
 }
 ?>
